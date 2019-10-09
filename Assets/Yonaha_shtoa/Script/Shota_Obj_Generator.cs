@@ -6,6 +6,8 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
     [SerializeField] private List<Shota_ObjState> Target_Obj; // 生成するプレハブ格納
 
+    private List<Shota_ObjState> cp_target_Obj; // リセット用
+
     [SerializeField] private float fGenerate_Interval; // 生成間隔
 
     private float fGenerate_Count; // 生成までの残り時間
@@ -28,6 +30,13 @@ public class Shota_Obj_Generator : MonoBehaviour {
     {
         fGenerate_Count = 0;
         Target_Obj.Sort((a, b) => (int)b.GetGenerateRate() - (int)a.GetGenerateRate());
+
+        cp_target_Obj = new List<Shota_ObjState>(Target_Obj);
+
+        foreach (Shota_ObjState state in Target_Obj)
+        {
+            Debug.Log(state.GetObject().name);
+        }
         
     }
 
@@ -45,22 +54,34 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
     private void CreateObj()
     {
-        int iRandNum;
-        iRandNum = Random.Range(0, 100);
-        GameObject obj = Instantiate(Target_Obj[SetIndex(iRandNum)].GetObject(),
+
+        // ここで生成箱の中を補充しているので止めたい場合はこの条件式をコメントアウトしてください
+        if(Target_Obj.Count == 0)
+        {
+            Target_Obj = new List<Shota_ObjState>(cp_target_Obj);
+            foreach(Shota_ObjState state in Target_Obj)
+            {
+                state.Init();
+            }
+        }
+
+        int iIndexNum = SetIndex(Random.Range(0, 100));
+
+        GameObject obj = Instantiate(Target_Obj[iIndexNum].GetObject(),
             new Vector3(fGenerate_LaneSize*SelectLane() + transform.position.x,transform.position.y,transform.position.z),
             Quaternion.identity);
-        Target_Obj[iRandNum].SubtractionReminingNumber(1);
-        if(Target_Obj[iRandNum].GetiReminingNumber() <= 0)
+
+        Target_Obj[iIndexNum].SubtractionReminingNumber(1);
+
+        if(Target_Obj[iIndexNum].GetiReminingNumber() <= 0)
         {
-            float Rate = Target_Obj[iRandNum].GetGenerateRate();
-            Target_Obj.RemoveAt(iRandNum);
+            float Rate = Target_Obj[iIndexNum].GetGenerateRate();
+            Target_Obj.RemoveAt(iIndexNum);
             foreach(Shota_ObjState state in Target_Obj)
             {
                 state.AddGenerateRate(Rate / Target_Obj.Count);
             }
         }
-        CheckGenerateObject(obj);
     }
 
     private int SelectLane()
@@ -75,11 +96,6 @@ public class Shota_Obj_Generator : MonoBehaviour {
         fCount = fSetNum;
     }
 
-    private void CheckGenerateObject(GameObject obj)
-    {
-        Debug.Log(obj.name + "　を　生成しました");
-    }
-
     private int SetIndex(int randnum)
     {
         int indexNum = 0;
@@ -87,16 +103,13 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
         foreach (Shota_ObjState state in Target_Obj)
         {
-            cumurativeRate += (int)state.GetGenerateRate();
-
-            if (cumurativeRate <= randnum)
+            cumurativeRate += Mathf.CeilToInt(state.GetGenerateRate());
+            if (cumurativeRate >= randnum)
             {
                 break;
             }
             indexNum++;
         }
-
-
         return indexNum;
     }
 
@@ -110,4 +123,7 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
 //　このジェネレータは
 //　配列に格納されたオブジェクトのクローンを
-//　ランダムな等間隔の位置に,ランダムに選んで生成します
+//　ランダムな等間隔の位置に,ランダムに生成します
+
+//　追記：最大生成数、出現確率をある程度制御できるように変更を加えました。
+//　なお、生成できるオブジェクトがなくなった場合,リセットされ最初のの生成状態に戻ります
