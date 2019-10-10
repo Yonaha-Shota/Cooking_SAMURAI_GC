@@ -14,7 +14,7 @@ public class Mori_LoadMain : MonoBehaviour {
 	}
 
 	//Buttonをクリックするとメインシーンに移動する
-	public void ButtonClicked(){
+	/*public void ButtonClicked(){
 		SceneManager.LoadScene ("Mori_Main");
-	}
+	}*/
 }
