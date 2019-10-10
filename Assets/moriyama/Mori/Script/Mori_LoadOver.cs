@@ -14,7 +14,7 @@ public class Mori_LoadOver : MonoBehaviour {
 	}
 
 	//Buttonをクリックするとオーバーシーンに移動する
-	public void ButtonClicked(){
+	/*public void ButtonClicked(){
 		SceneManager.LoadScene ("Mori_Over");
-	}
+	}*/
 }
