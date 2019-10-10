@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IronArray : MonoBehaviour {
+public class shota_IronArray : MonoBehaviour {
 
     [SerializeField] GameObject Target_Anim; // 対象のアニメーション
     [SerializeField] float DeadTime; // アニメーションが消滅するまでの時間
@@ -10,7 +10,7 @@ public class IronArray : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject anim = Instantiate(Target_Anim);
+        GameObject anim = Instantiate(Target_Anim,transform.position,Quaternion.identity);
         Destroy(anim,DeadTime);
     }
 }

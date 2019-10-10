@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect : MonoBehaviour {
-
+public class shota_Effect : MonoBehaviour {
+    
     public void SelfDestroy(float limit)
     {
         Destroy(gameObject , limit);
