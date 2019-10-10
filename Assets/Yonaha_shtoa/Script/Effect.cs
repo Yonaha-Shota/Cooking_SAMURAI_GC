@@ -6,6 +6,10 @@ public class Effect : MonoBehaviour {
 
     public void SelfDestroy(float limit)
     {
-        Destroy(gameObject, limit);
+        Destroy(gameObject , limit);
+    }
+    public void ParentDestroy(float limit)
+    {
+        Destroy(transform.root.gameObject, limit);
     }
 }
