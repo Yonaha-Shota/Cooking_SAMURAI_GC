@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FallVegetable : MonoBehaviour
 {
+    [SerializeField]
     public float fallSpeed = -0.03f;
 
     

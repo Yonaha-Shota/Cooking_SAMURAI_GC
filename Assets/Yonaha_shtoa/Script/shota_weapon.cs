@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class shota_weapon : MonoBehaviour {
+
     [SerializeField] GameObject Trail; // 剣閃
     [SerializeField] GameObject parentObj; // 親オブジェクト
     [SerializeField] float rote; // 回転角度
