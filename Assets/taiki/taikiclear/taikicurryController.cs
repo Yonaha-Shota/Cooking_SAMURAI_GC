@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 
 public class taikicurryController : MonoBehaviour {
 
-    private float curryspeed=-3.0f;
+    private float curryspeed=-0.3f;
     private float curryposition = 0f;
     float posx,posy;
     [SerializeField]
@@ -14,8 +14,8 @@ public class taikicurryController : MonoBehaviour {
     bool particleflg;
 	// Use this for initialization
 	void Start () {
-        posx = GetComponent<RectTransform>().position.x;
-        posy = GetComponent<RectTransform>().position.y;
+        posx = GetComponent<Transform>().position.x;
+        posy = GetComponent<Transform>().position.y;
         cash = ParticleObject.GetComponent<ParticleSystem>();
         cash.Stop();
        
@@ -24,10 +24,10 @@ public class taikicurryController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         posy += curryspeed;
-        GetComponent<RectTransform>().position = new Vector3(posx, posy, 0);
+        GetComponent<Transform>().position = new Vector3(posx, posy, 0);
         Debug.Log(posy);
 
-        if (posy <= 900)
+        if (posy <= 3)
         {
             Debug.Log("止まる");
             curryspeed = 0;

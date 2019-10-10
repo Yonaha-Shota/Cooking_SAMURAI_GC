@@ -24,7 +24,7 @@ public class taikicarryoverController : MonoBehaviour {
         GetComponent<RectTransform>().position = new Vector3(posx, posy, 0);
         Debug.Log(posy);
 
-        if (posy <= 500)
+        if (posy <= 0)
         {
             Debug.Log("止まる");
             curryspeed = 0;
