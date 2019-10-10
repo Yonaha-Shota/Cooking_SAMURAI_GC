@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shota_Obj_Generator : MonoBehaviour {
+public class Shota_Obj_Generator : MonoBehaviour
+{
 
     [SerializeField] private List<Shota_ObjState> Target_Obj; // 生成するプレハブ格納
 
@@ -16,16 +17,6 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
     [SerializeField] private int iGenerate_LaneNum; // レーンの数
 
-    // エディタ上に生成位置描画
-    private void OnDrawGizmos()
-    {
-        for (int i = 0; i < iGenerate_LaneNum; i++)
-        {
-            Gizmos.DrawIcon(new Vector3(fGenerate_LaneSize * i + transform.position.x, transform.position.y, transform.position.z),
-                "yjrs.png", true);
-        }
-    }
-
     private void Start()
     {
         fGenerate_Count = 0;
@@ -33,18 +24,13 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
         cp_target_Obj = new List<Shota_ObjState>(Target_Obj);
 
-        foreach (Shota_ObjState state in Target_Obj)
-        {
-            Debug.Log(state.GetObject().name);
-        }
-        
     }
 
     private void FixedUpdate()
     {
         fGenerate_Count += Time.deltaTime;
 
-        if(fGenerate_Count >= fGenerate_Interval)
+        if (fGenerate_Count >= fGenerate_Interval)
         {
             CreateObj();
             SetCount(0, ref fGenerate_Count);
@@ -56,10 +42,10 @@ public class Shota_Obj_Generator : MonoBehaviour {
     {
 
         // ここで生成箱の中を補充しているので止めたい場合はこの条件式をコメントアウトしてください
-        if(Target_Obj.Count == 0)
+        if (Target_Obj.Count == 0)
         {
             Target_Obj = new List<Shota_ObjState>(cp_target_Obj);
-            foreach(Shota_ObjState state in Target_Obj)
+            foreach (Shota_ObjState state in Target_Obj)
             {
                 state.Init();
             }
@@ -67,17 +53,17 @@ public class Shota_Obj_Generator : MonoBehaviour {
 
         int iIndexNum = SetIndex(Random.Range(0, 100));
 
-        GameObject obj = Instantiate(Target_Obj[iIndexNum].GetObject(),
-            new Vector3(fGenerate_LaneSize*SelectLane() + transform.position.x,transform.position.y,transform.position.z),
+        Instantiate(Target_Obj[iIndexNum].GetObject(),
+            new Vector3(fGenerate_LaneSize * SelectLane() + transform.position.x, transform.position.y, transform.position.z),
             Quaternion.identity);
 
         Target_Obj[iIndexNum].SubtractionReminingNumber(1);
 
-        if(Target_Obj[iIndexNum].GetiReminingNumber() <= 0)
+        if (Target_Obj[iIndexNum].GetiReminingNumber() <= 0)
         {
             float Rate = Target_Obj[iIndexNum].GetGenerateRate();
             Target_Obj.RemoveAt(iIndexNum);
-            foreach(Shota_ObjState state in Target_Obj)
+            foreach (Shota_ObjState state in Target_Obj)
             {
                 state.AddGenerateRate(Rate / Target_Obj.Count);
             }

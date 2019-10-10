@@ -2,51 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public class MoveChara : MonoBehaviour {
 
-    GameObject chara;
+   //定数
+    private const float LEFT = -7.0f;
+    private const float RIGHT = 3.0f;
+
+    //変数
     public const float Y = -3.75f;
     public float speed = -2.5f;
 
     public float X = -7.0f;
 
-    public bool Wait,Right,Left;
-
-public Vector2 vec;
-
-
     // Use this for initialization
     void Start () {
-        Wait  = true;
-        Right = false;
-        Left  = false;
-
-        chara = GameObject.FindWithTag("Player");
-
+      
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if ((X > -8) && (X < 4)) { 
-            if(Input.GetKeyDown(KeyCode.LeftArrow)||Input.GetKeyDown(KeyCode.RightArrow))
-             X += (Input.GetAxisRaw("Horizontal") * speed);
+        if ((X > LEFT - 1) && (X < RIGHT + 1)) { 
+            if(Input.GetKeyDown(KeyCode.LeftArrow)||Input.GetKeyDown(KeyCode.RightArrow))//左右キーいずれかを押したときのみ
+             X += (Input.GetAxisRaw("Horizontal") * speed);//左右を判断しXを±1する
         }
 
-        if (X <= -7.0f)
-        {
-            X = -7.0f;
-        }
-        if (X >= 3.0f)
-        {
-            X = 3.0f;
-        }
+        if (X <= LEFT){X = LEFT;}//範囲指定
+        if (X >= RIGHT){X = RIGHT;}//範囲指定
 
-        Vector2 direction = new Vector2(X, 0).normalized;
+        //不要　Vector2 direction = new Vector2(X, 0).normalized;
 
-        // 移動する向きとスピードを代入する
+        // 位置移動
         GetComponent<Rigidbody2D>().position = new Vector2(X,0);
 
 
